@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
     'users',
     'matching',
-    'drf_yasg'  
+    'gamification', 
+      'rooms'# 👈 add back
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

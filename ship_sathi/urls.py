@@ -21,5 +21,7 @@ urlpatterns = [
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='refresh'),
     path('api/users/', include('users.urls')),
     path('api/matching/', include('matching.urls')),
+    path('api/gamification/', include('gamification.urls')),
+    path('api/rooms/', include('rooms.urls')),  # 👈 add this
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
