@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Leaderboard - Ship Sathi{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold">🏆 Leaderboard</h1>
+        <p class="text-gray-400 mt-1">Top students at your college</p>
+    </div>
+
+    {% if leaderboard %}
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
+            {% for entry in leaderboard %}
+            <div class="flex items-center gap-4 p-5 border-b border-gray-800 hover:bg-gray-800 transition duration-200
+                {% if forloop.first %}bg-yellow-900 bg-opacity-20{% endif %}">
+
+                <!-- Rank -->
+                <div class="w-10 text-center">
+                    {% if forloop.counter == 1 %}
+                        <span class="text-2xl">🥇</span>
+                    {% elif forloop.counter == 2 %}
+                        <span class="text-2xl">🥈</span>
+                    {% elif forloop.counter == 3 %}
+                        <span class="text-2xl">🥉</span>
+                    {% else %}
+                        <span class="text-gray-400 font-bold">#{{ forloop.counter }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Avatar -->
+                <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center font-bold text-lg">
+                    {{ entry.username|first|upper }}
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1">
+                    <p class="font-bold">{{ entry.username }}</p>
+                    <p class="text-gray-400 text-sm">{{ entry.college }}</p>
+                </div>
+
+                <!-- XP -->
+                <div class="text-right">
+                    <p class="text-indigo-400 font-bold text-lg">{{ entry.xp }} XP</p>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center">
+            <p class="text-6xl mb-4">🏆</p>
+            <h2 class="text-2xl font-bold mb-2">No entries yet!</h2>
+            <p class="text-gray-400">Be the first to check in and top the leaderboard!</p>
+            <a href="/dashboard/" class="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-bold transition duration-200">
+                Go Check In 🔥
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

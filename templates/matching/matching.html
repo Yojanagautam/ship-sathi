@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Find Study Partners - Ship Sathi{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-2">💫 Find Study Partners</h1>
+    <p class="text-gray-400 mb-8">Swipe right to match, left to skip</p>
+
+    {% if users %}
+        {% for u in users %}
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-4">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-2xl font-bold">
+                    {{ u.username|first|upper }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold">{{ u.username }}</h2>
+                    <p class="text-gray-400">{{ u.college }}</p>
+                    <p class="text-indigo-400 text-sm">⚡ {{ u.xp }} XP</p>
+                </div>
+            </div>
+
+            {% if u.profile.skills %}
+            <div class="mb-3">
+                <p class="text-gray-400 text-sm mb-2">Skills:</p>
+                <div class="flex gap-2 flex-wrap">
+                    {% for skill in u.profile.skills %}
+                        <span class="bg-indigo-900 text-indigo-300 px-3 py-1 rounded-full text-sm">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if u.profile.study_goals %}
+            <p class="text-gray-400 text-sm mb-4">🎯 {{ u.profile.study_goals }}</p>
+            {% endif %}
+
+            <div class="flex gap-3">
+                <form method="POST" action="/matching/swipe/">
+                    {% csrf_token %}
+                    <input type="hidden" name="receiver_id" value="{{ u.id }}">
+                    <input type="hidden" name="direction" value="left">
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl font-bold transition duration-200">
+                        ❌ Skip
+                    </button>
+                </form>
+                <form method="POST" action="/matching/swipe/">
+                    {% csrf_token %}
+                    <input type="hidden" name="receiver_id" value="{{ u.id }}">
+                    <input type="hidden" name="direction" value="right">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl font-bold transition duration-200">
+                        ✅ Match
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center">
+            <p class="text-6xl mb-4">🎉</p>
+            <h2 class="text-2xl font-bold mb-2">You've seen everyone!</h2>
+            <p class="text-gray-400">No more potential matches right now. Check back later!</p>
+            <a href="/dashboard/" class="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-bold transition duration-200">
+                Back to Dashboard
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

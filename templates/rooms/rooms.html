@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Study Rooms - Ship Sathi{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold">📚 Study Rooms</h1>
+            <p class="text-gray-400 mt-1">Join or create a study room</p>
+        </div>
+        <button onclick="document.getElementById('createModal').classList.remove('hidden')"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition duration-200">
+            + Create Room
+        </button>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div id="createModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6">Create Study Room</h2>
+            <form method="POST" action="/rooms/create/">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="block text-gray-400 mb-2">Room Name</label>
+                    <input type="text" name="name" required
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500"
+                        placeholder="DSA Study Session">
+                </div>
+                <div class="mb-6 flex items-center gap-3">
+                    <input type="checkbox" name="is_silent_mode" id="silent" class="w-4 h-4">
+                    <label for="silent" class="text-gray-400">Silent Focus Mode 🤫</label>
+                </div>
+                <div class="flex gap-3">
+                    <button type="submit"
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition duration-200">
+                        Create 🚀
+                    </button>
+                    <button type="button"
+                        onclick="document.getElementById('createModal').classList.add('hidden')"
+                        class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-xl transition duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rooms List -->
+    {% if rooms %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for room in rooms %}
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+                <div class="flex justify-between items-start mb-3">
+                    <h2 class="text-xl font-bold">{{ room.name }}</h2>
+                    {% if room.is_silent_mode %}
+                        <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-xs">🤫 Silent</span>
+                    {% endif %}
+                </div>
+                <p class="text-gray-400 text-sm mb-1">👤 Created by {{ room.created_by }}</p>
+                <p class="text-indigo-400 text-sm mb-4">👥 {{ room.members }} members</p>
+                <div class="flex gap-3">
+                    <form method="POST" action="/rooms/{{ room.id }}/join/">
+                        {% csrf_token %}
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold transition duration-200">
+                            Join 🚀
+                        </button>
+                    </form>
+                    <form method="POST" action="/rooms/{{ room.id }}/leave/">
+                        {% csrf_token %}
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold transition duration-200">
+                            Leave 👋
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center">
+            <p class="text-6xl mb-4">📚</p>
+            <h2 class="text-2xl font-bold mb-2">No rooms yet!</h2>
+            <p class="text-gray-400">Create the first study room and invite your matches.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

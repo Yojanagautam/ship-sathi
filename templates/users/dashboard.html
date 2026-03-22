@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Ship Sathi{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+
+    <!-- Welcome Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold">Welcome back, <span class="text-indigo-400">{{ user.username }}</span> 👋</h1>
+        <p class="text-gray-400 mt-1">{{ user.college }}</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-indigo-400">{{ stats.xp }}</p>
+            <p class="text-gray-400 mt-1">Total XP</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-orange-400">🔥 {{ stats.current_streak }}</p>
+            <p class="text-gray-400 mt-1">Current Streak</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-green-400">{{ stats.longest_streak }}</p>
+            <p class="text-gray-400 mt-1">Longest Streak</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-yellow-400">{{ stats.reliability_score }}</p>
+            <p class="text-gray-400 mt-1">Reliability Score</p>
+        </div>
+    </div>
+
+    <!-- Badges -->
+    {% if stats.badges %}
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-8">
+        <h2 class="text-xl font-bold mb-4">🏅 Your Badges</h2>
+        <div class="flex gap-3 flex-wrap">
+            {% for badge in stats.badges %}
+                <span class="bg-indigo-600 px-4 py-2 rounded-full text-sm font-medium">{{ badge }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <form method="POST" action="/checkin/">
+            {% csrf_token %}
+            <button class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-2xl transition duration-200">
+                🔥 Daily Check-in
+            </button>
+        </form>
+        <a href="/matching/" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl text-center transition duration-200 flex items-center justify-center">
+            💫 Find Study Partners
+        </a>
+        <a href="/rooms/" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl text-center transition duration-200 flex items-center justify-center">
+            📚 Study Rooms
+        </a>
+    </div>
+
+    <!-- My Matches -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+        <h2 class="text-xl font-bold mb-4">🤝 My Study Partners</h2>
+        {% if matches %}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for match in matches %}
+                <div class="bg-gray-800 rounded-xl p-4 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center font-bold">
+                        {{ match.username|first|upper }}
+                    </div>
+                    <div>
+                        <p class="font-medium">{{ match.username }}</p>
+                        <p class="text-gray-400 text-sm">{{ match.college }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-400 text-center py-4">No study partners yet. <a href="/matching/" class="text-indigo-400 hover:underline">Find some!</a></p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

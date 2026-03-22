@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Ship Sathi{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-400">🚢 Ship Sathi</h1>
+            <p class="text-gray-400 mt-2">Swipe. Match. Study. Grow.</p>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6 text-center">Welcome Back!</h2>
+
+        {% if error %}
+            <div class="bg-red-500 text-white p-3 rounded-lg mb-4 text-center">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="/login/">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-gray-400 mb-2">Email</label>
+                <input 
+                    type="email" 
+                    name="email" 
+                    required
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500"
+                    placeholder="you@example.com"
+                >
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-400 mb-2">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    required
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500"
+                    placeholder="••••••••"
+                >
+            </div>
+            <button 
+                type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-200">
+                Login 🚀
+            </button>
+        </form>
+
+        <p class="text-center text-gray-400 mt-6">
+            Don't have an account? 
+            <a href="/register/" class="text-indigo-400 hover:underline">Register</a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}
