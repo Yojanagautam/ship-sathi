@@ -209,3 +209,7 @@ def leaderboard_page(request):
     leaderboard = response.json() if response.status_code == 200 else []
 
     return render(request, 'gamification/leaderboard.html', {'leaderboard': leaderboard})
+def landing_page(request):
+    if request.session.get('access_token'):
+        return redirect('/dashboard/')
+    return render(request, 'landing.html')

@@ -5,7 +5,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from users.views import (
-    login_page, register_page, dashboard_page,
+    landing_page, login_page, register_page, dashboard_page,
     logout_page, checkin_page, matching_page,
     swipe_page, rooms_page, create_room_page,
     join_room_page, leave_room_page, leaderboard_page
@@ -33,7 +33,7 @@ urlpatterns = [
     path('api/rooms/', include('rooms.urls')),
 
     # Template pages
-    path('', dashboard_page, name='home'),
+    path('', landing_page, name='home'),       # 👈 landing page
     path('login/', login_page, name='login-page'),
     path('register/', register_page, name='register-page'),
     path('dashboard/', dashboard_page, name='dashboard'),
